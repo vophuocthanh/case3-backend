@@ -101,6 +101,158 @@ app.post('/login', (req, res) => {
   });
 });
 
+// Backend phía Employee
+
+// Đọc dữ liệu của Employee
+app.get('/employee', (req, res) => {
+  const sql = 'SELECT * FROM employee';
+  db.query(sql, (err, data) => {
+    if (err) return res.status(500).json({ error: err.message });
+    return res.json(data);
+  });
+});
+
+// Create Employee
+app.post('/employee', (req, res) => {
+  const {
+    Employee_Number,
+    idEmployee,
+    First_Name,
+    Last_Name,
+    SSN,
+    Pay_Rate,
+    PayRates_id,
+    Vacation_Days,
+    Paid_To_Date,
+    Paid_Last_Year,
+  } = req.body;
+  const sql =
+    'INSERT INTO employee (Employee_Number, idEmployee, First_Name, Last_Name, SSN, Pay_Rate, PayRates_id, Vacation_Days, Paid_To_Date, Paid_Last_Year) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+  const values = [
+    Employee_Number,
+    idEmployee,
+    First_Name,
+    Last_Name,
+    SSN,
+    Pay_Rate,
+    PayRates_id,
+    Vacation_Days,
+    Paid_To_Date,
+    Paid_Last_Year,
+  ];
+  db.query(sql, values, (err, data) => {
+    if (err) return res.status(500).json({ error: err.message });
+    return res
+      .status(201)
+      .json({ message: 'Employee đã được tạo', id: data.insertId });
+  });
+});
+
+// Update Employee
+app.put('/employee/:id', (req, res) => {
+  const IdEmployee = req.params.id;
+  const updatedEmployee = req.body;
+  const sql = 'UPDATE employee SET ? WHERE idEmployee = ?';
+  db.query(sql, [updatedEmployee, IdEmployee], (err, data) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (data.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ message: 'Không tìm thấy employee để cập nhật' });
+    }
+    return res.json({ message: 'Employee đã được cập nhật', id: IdEmployee });
+  });
+});
+
+// Delete Employee
+app.delete('/employee/:id', (req, res) => {
+  const userId = req.params.id;
+  const sql = 'DELETE FROM employee WHERE idEmployee = ?';
+  db.query(sql, [userId], (err, data) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (data.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ message: 'Không tìm thấy employee để xóa' });
+    }
+    return res.json({ message: 'Employee đã được xóa', id: userId });
+  });
+});
+
+// Backend phía Pay Rates
+
+// Đọc dữ liệu của Pay Rates
+app.get('/pay_rates', (req, res) => {
+  const sql = 'SELECT * FROM pay_rates';
+  db.query(sql, (err, data) => {
+    if (err) return res.status(500).json({ error: err.message });
+    return res.json(data);
+  });
+});
+
+// Create Pay Rates
+app.post('/pay_rates', (req, res) => {
+  const {
+    idPay_Rates,
+    Pay_Rate_Name,
+    Value,
+    Tax_Percentage,
+    Pay_Type,
+    Pay_Amount,
+    PT_Level_C,
+  } = req.body;
+  const sql =
+    'INSERT INTO pay_rates (idPay_Rates, Pay_Rate_Name, Value, Tax_Percentage, Pay_Type, Pay_Amount, 	PT_Level_C) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  const values = [
+    idPay_Rates,
+    Pay_Rate_Name,
+    Value,
+    Tax_Percentage,
+    Pay_Type,
+    Pay_Amount,
+    PT_Level_C,
+  ];
+  db.query(sql, values, (err, data) => {
+    if (err) return res.status(500).json({ error: err.message });
+    return res
+      .status(201)
+      .json({ message: 'Pay Rates đã được tạo', id: data.insertId });
+  });
+});
+
+// Update Pay Rates
+
+app.put('/pay_rates/:id', (req, res) => {
+  const IdEmployee = req.params.id;
+  const updatedEmployee = req.body;
+  const sql = 'UPDATE pay_rates SET ? WHERE idPay_Rates = ?';
+  db.query(sql, [updatedEmployee, IdEmployee], (err, data) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (data.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ message: 'Không tìm thấy Pay Rates để cập nhật' });
+    }
+    return res.json({ message: 'Pay Rates đã được cập nhật', id: IdEmployee });
+  });
+});
+
+// Delete Pay Rates
+
+app.delete('/pay_rates/:id', (req, res) => {
+  const userId = req.params.id;
+  const sql = 'DELETE FROM pay_rates WHERE idPay_Rates = ?';
+  db.query(sql, [userId], (err, data) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (data.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ message: 'Không tìm thấy Pay Rates để xóa' });
+    }
+    return res.json({ message: 'Pay Rates đã được xóa', id: userId });
+  });
+});
+
 app.listen(8081, () => {
   console.log('Ứng dụng đang lắng nghe trên cổng 8081');
 });
