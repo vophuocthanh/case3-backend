@@ -2,7 +2,7 @@
 
 ## Clone project:
 
-`https://github.com/vophuocthanh/case3-backend.git`
+`git clone https://github.com/vophuocthanh/case3-backend.git`
 
 ## Introductions
 
