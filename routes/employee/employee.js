@@ -1,13 +1,6 @@
 const express = require('express');
 const routerEmployee = express.Router();
-const mysql = require('mysql');
-
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'dashboard',
-});
+const { db } = require('../../modules/server-database');
 
 // Backend phía Employee
 
@@ -23,8 +16,8 @@ routerEmployee.get('/', (req, res) => {
 // Create Employee
 routerEmployee.post('/', (req, res) => {
   const {
-    Employee_Number,
     idEmployee,
+    Employee_Number,
     First_Name,
     Last_Name,
     SSN,
@@ -35,10 +28,10 @@ routerEmployee.post('/', (req, res) => {
     Paid_Last_Year,
   } = req.body;
   const sql =
-    'INSERT INTO employee (Employee_Number, idEmployee, First_Name, Last_Name, SSN, Pay_Rate, PayRates_id, Vacation_Days, Paid_To_Date, Paid_Last_Year) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    'INSERT INTO employee (idEmployee, Employee_Number, First_Name, Last_Name, SSN, Pay_Rate, PayRates_id, Vacation_Days, Paid_To_Date, Paid_Last_Year) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
   const values = [
-    Employee_Number,
     idEmployee,
+    Employee_Number,
     First_Name,
     Last_Name,
     SSN,
@@ -50,9 +43,10 @@ routerEmployee.post('/', (req, res) => {
   ];
   db.query(sql, values, (err, data) => {
     if (err) return res.status(500).json({ error: err.message });
-    return res
-      .status(201)
-      .json({ message: 'Employee đã được tạo', id: data.insertId });
+    return res.status(201).json({
+      message: 'Employee đã được tạo',
+      idEmployee: data.insertId,
+    });
   });
 });
 

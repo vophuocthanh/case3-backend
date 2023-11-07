@@ -1,13 +1,7 @@
 const express = require('express');
 const routerPayRates = express.Router();
 const mysql = require('mysql');
-
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'dashboard',
-});
+const { db } = require('../../modules/server-database');
 
 // Backend phía Pay Rates
 
@@ -46,7 +40,7 @@ routerPayRates.post('/', (req, res) => {
     if (err) return res.status(500).json({ error: err.message });
     return res
       .status(201)
-      .json({ message: 'Pay Rates đã được tạo', id: data.insertId });
+      .json({ message: 'Pay Rates đã được tạo', idPay_Rates: data.insertId });
   });
 });
 

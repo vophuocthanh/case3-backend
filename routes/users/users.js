@@ -1,13 +1,7 @@
 const express = require('express');
 const routerUsers = express.Router();
 const mysql = require('mysql');
-
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'dashboard',
-});
+const { db } = require('../../modules/server-database');
 
 routerUsers.get('/', (req, res) => {
   const sql = 'SELECT * FROM users';
@@ -31,16 +25,17 @@ routerUsers.get('/:id', (req, res) => {
 });
 
 // Tạo một người dùng mới (Create)
-routerUsers.post('/users', (req, res) => {
-  const { User_Name, Email, Password, Active } = req.body;
+routerUsers.post('/', (req, res) => {
+  const { User_ID, User_Name, Email, Password, Active } = req.body;
+  // const User_ID = uuid.v4();
   const sql =
-    'INSERT INTO users (User_Name, Email, Password, Active) VALUES (?, ?, ?, ?)';
-  const values = [User_Name, Email, Password, Active];
+    'INSERT INTO users (User_ID, User_Name, Email, Password, Active) VALUES (?, ?, ?, ?, ?)';
+  const values = [User_ID, User_Name, Email, Password, Active];
   db.query(sql, values, (err, data) => {
     if (err) return res.status(500).json({ error: err.message });
     return res
       .status(201)
-      .json({ message: 'Người dùng đã được tạo', id: data.insertId });
+      .json({ message: 'Người dùng đã được tạo', User_ID: data.insertId });
   });
 });
 
