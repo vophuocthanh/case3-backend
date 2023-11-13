@@ -2,9 +2,6 @@ const express = require('express');
 const routerEmployee = express.Router();
 const { db } = require('../../modules/server-database');
 
-// Backend phía Employee
-
-// Đọc dữ liệu của Employee
 routerEmployee.get('/', (req, res) => {
   const sql = 'SELECT * FROM employee';
   db.query(sql, (err, data) => {
@@ -13,7 +10,18 @@ routerEmployee.get('/', (req, res) => {
   });
 });
 
-// Create Employee
+routerEmployee.get('/:id', (req, res) => {
+  const EmployeeNumber = req.params.id;
+  const sql = 'SELECT * FROM employee WHERE Employee_Number = ?';
+  db.query(sql, [EmployeeNumber], (err, data) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (data.length === 0) {
+      return res.status(404).json({ message: 'Không tìm thấy Employee' });
+    }
+    return res.json(data[0]);
+  });
+});
+
 routerEmployee.post('/', (req, res) => {
   const {
     idEmployee,
@@ -50,7 +58,6 @@ routerEmployee.post('/', (req, res) => {
   });
 });
 
-// Update Employee
 routerEmployee.put('/:id', (req, res) => {
   const IdEmployee = req.params.id;
   const updatedEmployee = req.body;
@@ -66,7 +73,6 @@ routerEmployee.put('/:id', (req, res) => {
   });
 });
 
-// Delete Employee
 routerEmployee.delete('/:id', (req, res) => {
   const userId = req.params.id;
   const sql = 'DELETE FROM employee WHERE idEmployee = ?';

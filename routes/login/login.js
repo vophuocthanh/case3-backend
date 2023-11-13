@@ -9,10 +9,8 @@ const db = mysql.createConnection({
   database: 'dashboard',
 });
 
-// Đăng nhập (Login)
 routerLogin.post('/', (req, res) => {
   const sql = 'SELECT * FROM login WHERE Email = ? AND Password = ?';
-  // const values = [req.body.Email, req.body.Password];
   db.query(sql, [req.body.Email, req.body.Password], (err, data) => {
     if (err) return res.json('Error');
     if (data.length > 0) {

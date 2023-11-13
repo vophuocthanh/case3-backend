@@ -1,6 +1,5 @@
 const express = require('express');
 const routerUsers = express.Router();
-const mysql = require('mysql');
 const { db } = require('../../modules/server-database');
 
 routerUsers.get('/', (req, res) => {
@@ -11,7 +10,6 @@ routerUsers.get('/', (req, res) => {
   });
 });
 
-// Đọc một người dùng dựa trên ID (Read by ID)
 routerUsers.get('/:id', (req, res) => {
   const userId = req.params.id;
   const sql = 'SELECT * FROM users WHERE User_ID = ?';
@@ -24,10 +22,8 @@ routerUsers.get('/:id', (req, res) => {
   });
 });
 
-// Tạo một người dùng mới (Create)
 routerUsers.post('/', (req, res) => {
   const { User_ID, User_Name, Email, Password, Active } = req.body;
-  // const User_ID = uuid.v4();
   const sql =
     'INSERT INTO users (User_ID, User_Name, Email, Password, Active) VALUES (?, ?, ?, ?, ?)';
   const values = [User_ID, User_Name, Email, Password, Active];
@@ -39,7 +35,6 @@ routerUsers.post('/', (req, res) => {
   });
 });
 
-// Cập nhật thông tin người dùng (Update)
 routerUsers.put('/:id', (req, res) => {
   const userId = req.params.id;
   const updatedUser = req.body;
@@ -55,7 +50,6 @@ routerUsers.put('/:id', (req, res) => {
   });
 });
 
-// Xóa người dùng (Delete)
 routerUsers.delete('/:id', (req, res) => {
   const userId = req.params.id;
   const sql = 'DELETE FROM users WHERE User_id = ?';

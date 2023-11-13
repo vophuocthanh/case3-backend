@@ -1,11 +1,7 @@
 const express = require('express');
 const routerPayRates = express.Router();
-const mysql = require('mysql');
 const { db } = require('../../modules/server-database');
 
-// Backend phía Pay Rates
-
-// Đọc dữ liệu của Pay Rates
 routerPayRates.get('/', (req, res) => {
   const sql = 'SELECT * FROM pay_rates';
   db.query(sql, (err, data) => {
@@ -14,7 +10,18 @@ routerPayRates.get('/', (req, res) => {
   });
 });
 
-// Create Pay Rates
+routerPayRates.get('/:id', (req, res) => {
+  const idPayRates = req.params.id;
+  const sql = 'SELECT * FROM pay_rates WHERE idPay_Rates = ?';
+  db.query(sql, [idPayRates], (err, data) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (data.length === 0) {
+      return res.status(404).json({ message: 'Không tìm thấy Pay Rates' });
+    }
+    return res.json(data[0]);
+  });
+});
+
 routerPayRates.post('/', (req, res) => {
   const {
     idPay_Rates,
@@ -44,24 +51,20 @@ routerPayRates.post('/', (req, res) => {
   });
 });
 
-// Update Pay Rates
-
 routerPayRates.put('/:id', (req, res) => {
-  const IdEmployee = req.params.id;
-  const updatedEmployee = req.body;
+  const idPayRates = req.params.id;
+  const updatedPayRates = req.body;
   const sql = 'UPDATE pay_rates SET ? WHERE idPay_Rates = ?';
-  db.query(sql, [updatedEmployee, IdEmployee], (err, data) => {
+  db.query(sql, [updatedPayRates, idPayRates], (err, data) => {
     if (err) return res.status(500).json({ error: err.message });
     if (data.affectedRows === 0) {
       return res
         .status(404)
         .json({ message: 'Không tìm thấy Pay Rates để cập nhật' });
     }
-    return res.json({ message: 'Pay Rates đã được cập nhật', id: IdEmployee });
+    return res.json({ message: 'Pay Rates đã được cập nhật', id: idPayRates });
   });
 });
-
-// Delete Pay Rates
 
 routerPayRates.delete('/:id', (req, res) => {
   const userId = req.params.id;
