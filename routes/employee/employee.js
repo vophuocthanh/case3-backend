@@ -61,7 +61,7 @@ routerEmployee.post('/', (req, res) => {
 routerEmployee.put('/:id', (req, res) => {
   const IdEmployee = req.params.id;
   const updatedEmployee = req.body;
-  const sql = 'UPDATE employee SET ? WHERE idEmployee = ?';
+  const sql = 'UPDATE employee SET ? WHERE Employee_Number = ?';
   db.query(sql, [updatedEmployee, IdEmployee], (err, data) => {
     if (err) return res.status(500).json({ error: err.message });
     if (data.affectedRows === 0) {
@@ -75,7 +75,7 @@ routerEmployee.put('/:id', (req, res) => {
 
 routerEmployee.delete('/:id', (req, res) => {
   const userId = req.params.id;
-  const sql = 'DELETE FROM employee WHERE idEmployee = ?';
+  const sql = 'DELETE FROM employee WHERE Employee_Number = ?';
   db.query(sql, [userId], (err, data) => {
     if (err) return res.status(500).json({ error: err.message });
     if (data.affectedRows === 0) {

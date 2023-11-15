@@ -2,6 +2,60 @@ const express = require('express');
 const routerUsers = express.Router();
 const { db } = require('../../modules/server-database');
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         User_ID:
+ *           type: integer
+ *           description: ID người dùng
+ *           example: 1
+ *         User_Name:
+ *           type: string
+ *           description: Tên người dùng
+ *           example: John
+ *         Email:
+ *           type: string
+ *           format: email
+ *           description: Địa chỉ email của người dùng
+ *           example: john@example.com
+ *         Password:
+ *           type: string
+ *           description: Mật khẩu của người dùng (hashed)
+ *           example: '$2b$10$U0.y5RY4DNLOIguz9/IKlOf8sDa1SrlvcuR85lDrogepmCDLdHozi'
+ *         Role:
+ *           type: string
+ *           description: Vai trò của người dùng
+ *           example: admin
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: Quản lý người dùng API
+ */
+
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Returns the list of all users
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: The list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ */
+
 routerUsers.get('/', (req, res) => {
   const sql = 'SELECT * FROM users';
   db.query(sql, (err, data) => {
@@ -9,6 +63,26 @@ routerUsers.get('/', (req, res) => {
     return res.json(data);
   });
 });
+/**
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Lấy thông tin người dùng theo ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID của người dùng
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Thông tin người dùng
+ *       404:
+ *         description: Không tìm thấy người dùng
+ *       500:
+ *         description: Lỗi server
+ */
 
 routerUsers.get('/:id', (req, res) => {
   const userId = req.params.id;
