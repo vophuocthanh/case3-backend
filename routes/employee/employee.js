@@ -2,6 +2,13 @@ const express = require('express');
 const routerEmployee = express.Router();
 const { db } = require('../../modules/server-database');
 
+/**
+ * @swagger
+ * tags:
+ *   name: Employee
+ *   description: Quản lý employee API
+ */
+
 routerEmployee.get('/', (req, res) => {
   const sql = 'SELECT * FROM employee';
   db.query(sql, (err, data) => {
@@ -86,5 +93,163 @@ routerEmployee.delete('/:id', (req, res) => {
     return res.json({ message: 'Employee đã được xóa', id: userId });
   });
 });
+
+/**
+ * @swagger
+ * /employee:
+ *   get:
+ *     summary: Lấy ra tất cả các employee
+ *     responses:
+ *       200:
+ *         description: Danh sách employee
+ *       500:
+ *         description: L.Xr
+ *       404:
+ *         description: Không tìm thấy employee
+ *       400:
+ *         description: Lỗi bộ
+ */
+
+/**
+ * @swagger
+ * /employee/{id}:
+ *   get:
+ *     summary: Lấy employee theo ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID employee
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Thống tin employee
+ *       404:
+ *         description: Không tìm thấy employee
+ *       500:
+ *         description: Lỗi server
+ */
+
+/**
+ * @swagger
+ * /employee:
+ *   post:
+ *     summary: Tạo employee
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               idEmployee:
+ *                 type: integer
+ *                 description: ID employee
+ *               Employee_Number:
+ *                 type: integer
+ *                 description: Employee_Number
+ *               First_Name:
+ *                 type: string
+ *                 description: First_Name
+ *               Last_Name:
+ *                 type: string
+ *                 description: Last_Name
+ *               SSN:
+ *                 type: integer
+ *                 description: SSN
+ *               Pay_Rate:
+ *                 type: integer
+ *                 description: Pay_Rate
+ *               PayRates_id:
+ *                 type: integer
+ *                 description: PayRates_id
+ *               Vacation_Days:
+ *                 type: integer
+ *                 description: Vacation_Days
+ *               Paid_To_Date:
+ *                 type: integer
+ *                 description: Paid_To_Date
+ *               Paid_Last_Year:
+ *                 type: integer
+ *                 description: Paid_Last_Year
+ *     responses:
+ *       201:
+ *         description: Tạo employee
+ *       500:
+ *         description: Lỗi server
+ *       400:
+ *         description: Lỗi bộ
+ */
+
+/**
+ * @swagger
+ * /employee/{id}:
+ *   put:
+ *     summary: Cập nhật employee
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID employee
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Employee'
+ *             properties:
+ *               idEmployee:
+ *                 type: integer
+ *                 description: ID employee
+ *               Employee_Number:
+ *                 type: integer
+ *                 description: Employee_Number
+ *               First_Name:
+ *                 type: string
+ *                 description: First_Name
+ *               Last_Name:
+ *                 type: string
+ *                 description: Last_Name
+ *               SSN:
+ *                 type: integer
+ *                 description: SSN
+ *               Pay_Rate:
+ *                 type: integer
+ *                 description: Pay_Rate
+ *               PayRates_id:
+ *                 type: integer
+ *                 description: PayRates_id
+ *               Vacation_Days:
+ *                 type: integer
+ *                 description: Vacation_Days
+ *               Paid_To_Date:
+ *                 type: integer
+ *                 description: Paid_To_Date
+ *               Paid_Last_Year:
+ *                 type: integer
+ *                 description: Paid_Last_Year
+ *     responses:
+ *       200:
+ *         description: Employee được cập nhật
+ *       404:
+ *         description: Không tìm thấy employee để cập nhật
+ */
+
+/**
+ * @swagger
+ * /employee/{id}:
+ *   delete:
+ *     summary: Xóa employee
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID employee
+ *         schema:
+ *           type: integer
+ */
 
 module.exports.routerEmployee = routerEmployee;

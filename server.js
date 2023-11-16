@@ -9,9 +9,9 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'Library API',
+      title: 'Backend Case 3',
       version: '1.0.0',
-      description: 'A simple Express Library API',
+      description: 'Nhóm 3 - Backend Class SE 445 I',
     },
     servers: [
       {
@@ -19,9 +19,8 @@ const options = {
       },
     ],
   },
-  apis: ['./routes/*.js'],
+  apis: ['./routes/*/*.js'],
 };
-
 const specs = swaggerJsDoc(options);
 const app = express();
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
@@ -39,5 +38,5 @@ db.connect((err) => {
 });
 
 app.listen(8081, () => {
-  console.log('Ứng dụng đang lắng nghe trên cổng 8081');
+  console.log('Ứng dụng trên cổng 8081');
 });

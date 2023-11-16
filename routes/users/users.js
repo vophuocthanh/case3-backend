@@ -4,56 +4,9 @@ const { db } = require('../../modules/server-database');
 
 /**
  * @swagger
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       properties:
- *         User_ID:
- *           type: integer
- *           description: ID người dùng
- *           example: 1
- *         User_Name:
- *           type: string
- *           description: Tên người dùng
- *           example: John
- *         Email:
- *           type: string
- *           format: email
- *           description: Địa chỉ email của người dùng
- *           example: john@example.com
- *         Password:
- *           type: string
- *           description: Mật khẩu của người dùng (hashed)
- *           example: '$2b$10$U0.y5RY4DNLOIguz9/IKlOf8sDa1SrlvcuR85lDrogepmCDLdHozi'
- *         Role:
- *           type: string
- *           description: Vai trò của người dùng
- *           example: admin
- */
-
-/**
- * @swagger
  * tags:
  *   name: Users
  *   description: Quản lý người dùng API
- */
-
-/**
- * @swagger
- * /users:
- *   get:
- *     summary: Returns the list of all users
- *     tags: [Users]
- *     responses:
- *       200:
- *         description: The list of users
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/User'
  */
 
 routerUsers.get('/', (req, res) => {
@@ -63,27 +16,6 @@ routerUsers.get('/', (req, res) => {
     return res.json(data);
   });
 });
-/**
- * @swagger
- * /users/{id}:
- *   get:
- *     summary: Lấy thông tin người dùng theo ID
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: ID của người dùng
- *         schema:
- *           type: integer
- *     responses:
- *       200:
- *         description: Thông tin người dùng
- *       404:
- *         description: Không tìm thấy người dùng
- *       500:
- *         description: Lỗi server
- */
-
 routerUsers.get('/:id', (req, res) => {
   const userId = req.params.id;
   const sql = 'SELECT * FROM users WHERE User_ID = ?';
@@ -137,4 +69,134 @@ routerUsers.delete('/:id', (req, res) => {
     return res.json({ message: 'Người dùng đã được xóa', id: userId });
   });
 });
+
+/**
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Lấy ra tất cả các users
+ *     responses:
+ *       200:
+ *         description: Danh sách người dùng
+ *       500:
+ *         description: L.Xr
+ *       404:
+ *         description: Không tìm thấy người dùng
+ *       400:
+ *         description: Yêu cầu không hợp lệ.
+ */
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Lấy thông tin người dùng theo ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID của người dùng
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Thông tin người dùng
+ *       404:
+ *         description: Không tìm thấy người dùng
+ *       500:
+ *         description: Lỗi server
+ */
+
+/**
+ * @swagger
+ * /users:
+ *   post:
+ *     summary: Tạo người dùng
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *             properties:
+ *               User_ID:
+ *                 type: integer
+ *               User_Name:
+ *                 type: string
+ *               Email:
+ *                 type: string
+ *               Password:
+ *                 type: string
+ *               Active:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Người dùng được tạo
+ *       500:
+ *         description: Lỗi server
+ *       400:
+ *         description: Yêu cầu không hợp lệ
+ *       404:
+ *         description: Không tìm thấy người dùng
+ */
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   put:
+ *     summary: Cập nhật người dùng
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID người dùng
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/User'
+ *             properties:
+ *               User_ID:
+ *                 type: integer
+ *               User_Name:
+ *                 type: string
+ *               Email:
+ *                 type: string
+ *               Password:
+ *                 type: string
+ *               Active:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Người dùng được cập nhật
+ *       404:
+ *         description: Không tìm thấy người dùng
+ *       500:
+ *         description: Lỗi server
+ */
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Xóa người dùng
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID người dùng
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Người dùng được xóa
+ *       404:
+ *         description: Không tìm thường người dùng
+ *       500:
+ *         description: Lỗi server
+ */
+
 module.exports.routerUsers = routerUsers;

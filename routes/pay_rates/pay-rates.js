@@ -2,6 +2,13 @@ const express = require('express');
 const routerPayRates = express.Router();
 const { db } = require('../../modules/server-database');
 
+/**
+ * @swagger
+ * tags:
+ *   name: PayRates
+ *   description: Quản lý Pay Rates API
+ */
+
 routerPayRates.get('/', (req, res) => {
   const sql = 'SELECT * FROM pay_rates';
   db.query(sql, (err, data) => {
@@ -79,5 +86,146 @@ routerPayRates.delete('/:id', (req, res) => {
     return res.json({ message: 'Pay Rates đã được xóa', id: userId });
   });
 });
+
+/**
+ * @swagger
+ * /pay_rates:
+ *   get:
+ *     summary: Lấy ra tất cả các Pay Rates
+ *     responses:
+ *       200:
+ *         description: Danh sách Pay Rates
+ *       500:
+ *         description: Lỗi server
+ *       404:
+ *         description: Không tìm thấy Pay Rates
+ *       400:
+ *         description: Yêu cầu không hợp lệ.
+ */
+
+/**
+ * @swagger
+ * /pay_rates/{id}:
+ *   get:
+ *     summary: Lỗi Pay Rates theo ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID Pay Rates
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Thống tin Pay Rates
+ *       404:
+ *         description: Không tìm thấy Pay Rates
+ *       500:
+ *         description: Lối server
+ */
+
+/**
+ * @swagger
+ * /pay_rates:
+ *   post:
+ *     summary: Tạo Pay Rates
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               idPay_Rates:
+ *                 type: integer
+ *               Pay_Rate_Name:
+ *                 type: string
+ *               Value:
+ *                 type: integer
+ *               Tax_Percentage:
+ *                 type: integer
+ *               Pay_Type:
+ *                 type: string
+ *               Pay_Amount:
+ *                 type: integer
+ *               PT_Level_C:
+ *                 type: integer
+ *     responses:
+ *       201:
+ *         description: Tạo Pay Rates
+ *       500:
+ *         description: Lỗi server
+ *       400:
+ *         description: Yêu cầu không hợp lệ.
+ *       404:
+ *         description: Không tìm thấy
+ *       409:
+ *         description: Lỗi
+ */
+
+/**
+ * @swagger
+ * /pay_rates/{id}:
+ *   put:
+ *     summary: Cập nhật Pay Rates
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID Pay Rates
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               idPay_Rates:
+ *                 type: integer
+ *               Pay_Rate_Name:
+ *                 type: string
+ *               Value:
+ *                 type: integer
+ *               Tax_Percentage:
+ *                 type: integer
+ *               Pay_Type:
+ *                 type: string
+ *               Pay_Amount:
+ *                 type: integer
+ *               PT_Level_C:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Cập nhật Pay Rates
+ *       500:
+ *         description: Lỗi server
+ *       400:
+ *         description: Yêu cầu không hợp lệ.
+ *       404:
+ *         description: Không tìm thấy Pay Rates
+ */
+
+/**
+ * @swagger
+ * /pay_rates/{id}:
+ *   delete:
+ *     summary: Xóa Pay Rates
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID Pay Rates
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Pay Rates được xóa
+ *       404:
+ *         description: Không tìm thấy Pay Rates không xóa
+ *       500:
+ *         description: Lỗi server
+ */
 
 module.exports.routerPayRates = routerPayRates;
